@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
         return Lottie.asset('assets/animation/rainy.json',
             height: 100, width: 200);
       default:
-        return Lottie.asset('assets/animation/defualt.json',
+        return Lottie.asset('assets/animation/clear.json',
             height: 100, width: 200);
     }
   }
