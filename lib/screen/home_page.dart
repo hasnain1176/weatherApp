@@ -1,10 +1,13 @@
-
+//
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import 'package:lottie/lottie.dart';
 
 import 'package:weather_app/function/fetchrate.dart';
 import 'package:weather_app/model/weather_model.dart';
+import 'package:weather_app/screen/home_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,16 +17,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-      
-            
-          
   var currently;
   ApiResponse? response;
+  Rx<TextEditingController> location = TextEditingController().obs;
+
+  final HomeVM = Get.find<HomeViewModel>();
   bool inProgress = false;
   String message = "Search for the location to get weather data";
-     
-
 
   Widget _getWeatherImage(String? currently) {
     switch (currently) {
@@ -43,14 +43,12 @@ class _HomePageState extends State<HomePage> {
         return Lottie.asset('assets/animation/rainy.json',
             height: 100, width: 200);
       default:
-        return Lottie.asset('assets/animation/defualt.json',
+        return Lottie.asset('assets/animation/clear.json',
             height: 100, width: 200);
     }
   }
 
-
   @override
-
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
@@ -80,7 +78,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-  
+
   Widget _buildWeatherWidget() {
     if (response == null) {
       return Text(message);
@@ -91,12 +89,8 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 100),
             child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // const Icon(
-                //   Icons.location_on,
-                //   size: 50,
-                // ),
                 Expanded(
                   child: Center(
                     child: Text(
@@ -111,7 +105,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          // SizedBox(height: 70),
           Center(
             child: Text(
               response?.location?.localtime?.split(" ").first ?? "",
@@ -154,7 +147,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SizedBox(height: 60),
-          // Text("Weather Deatails:",style: TextStyle(color: Colors.black),),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
@@ -169,17 +161,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-      
-          // Center(
-          //   child: SizedBox(
-          //     height: 200,
-          //     child: Image.network(
-          //       "https:${response?.current?.condition?.icon}"
-          //           .replaceAll("64x64", "128x128"),
-          //       scale: 0.7,
-          //     ),
-          //   ),
-          // ),
           Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
